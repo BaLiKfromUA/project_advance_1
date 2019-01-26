@@ -43,7 +43,7 @@ public class MainInterfaceController {
      */
     private static final Duration DURATION = Duration.millis(1000);
 
-    private volatile int AnimationDuration=1000;
+    private volatile int AnimationDuration = 1000;
     @FXML
     private Slider animationSlider;
 
@@ -143,7 +143,7 @@ public class MainInterfaceController {
         logAction(Action.EMPTY.getAction());
         // Adding Listener to value property.
         animationSlider.valueProperty().addListener((observable, oldValue, newValue) ->
-                AnimationDuration=newValue.intValue());
+                AnimationDuration = newValue.intValue());
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -411,6 +411,9 @@ public class MainInterfaceController {
         return optional;
     }
 
+    @FXML
+    private ToggleButton stepButton;
+
     /**
      * Метод для отключения и включения кнопок боковой панели.
      * Используется при запуске и остановке анимации.
@@ -425,12 +428,14 @@ public class MainInterfaceController {
                 .collect(Collectors.toSet());
         controls.forEach(node -> node.setDisable(disable));
         viewMenu.setDisable(disable);
+        stepButton.setDisable(disable);
     }
 
     private void disableAll(boolean disable) {
         Set<Node> controls = new HashSet<>(sideBar.getChildren());
         controls.forEach(node -> node.setDisable(disable));
         viewMenu.setDisable(disable);
+        stepButton.setDisable(disable);
     }
 
     /**
@@ -596,4 +601,6 @@ public class MainInterfaceController {
             showError(Error.MIN_CELL_SIZE);
         }
     }
+
+
 }
