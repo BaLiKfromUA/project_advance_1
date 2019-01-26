@@ -8,4 +8,4 @@
 - [Скриншоты](https://github.com/BaLiKfromUA/project_advance_1/tree/master/docs/screenshots)
 - [Консольная версия(руководство)](https://github.com/BaLiKfromUA/project_advance_1/blob/master/consoleApp/README.md)
 - Тесты(readme in progress)
-- Видеодемонстрация(in progress)
+- [Видеодемонстрация](https://drive.google.com/file/d/1Pzt2YPQ2_Ga-GfuPmsVtnMpTskUlS7pa/view?usp=sharing)
