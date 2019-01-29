@@ -62,6 +62,7 @@ public class MainApp extends Application {
         this.primaryStage.setMinWidth(MIN_WIDTH);
 
         showMainWindow();
+        this.primaryStage.setMaximized(true);
         primaryStage.show();
     }
 

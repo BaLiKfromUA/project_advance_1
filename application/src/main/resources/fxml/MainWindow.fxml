@@ -58,15 +58,15 @@
                                                     <children>
                                                         <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                             <children>
-                                                                <Button id="add-node-btn" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#insert" prefHeight="25.0" prefWidth="181.0" styleClass="control-btn" text="+/?" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                <Button id="min-btn" layoutY="50.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#getMin" prefHeight="25.0" prefWidth="183.0" styleClass="control-btn" text="min" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
-                                                                <Button id="random-btn" mnemonicParsing="false" onAction="#insertRandom" prefHeight="25.0" prefWidth="186.0" text="▶ Random element" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
+                                                                <Button id="add-node-btn" fx:id="insertFindButton" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#insert" prefHeight="25.0" prefWidth="181.0" styleClass="control-btn" text="+/?" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                                <Button id="min-btn" fx:id="getMinButton" layoutY="50.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#getMin" prefHeight="25.0" prefWidth="183.0" styleClass="control-btn" text="Extract minimum" textAlignment="JUSTIFY" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
+                                                                <Button id="random-btn" fx:id="randomInsertButton" alignment="CENTER" mnemonicParsing="false" onAction="#insertRandom" prefHeight="25.0" prefWidth="186.0" text="     Insert random" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
                                                                     <styleClass>
                                                                         <String fx:value="control-btn" />
                                                                         <String fx:value="control-btn-left" />
                                                                     </styleClass>
                                                                 </Button>
-                                                                <Button id="clean-btn" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#clean" prefHeight="25.0" prefWidth="182.0" text="▶ Clear heap" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
+                                                                <Button id="clean-btn" fx:id="clearButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#clean" prefHeight="25.0" prefWidth="182.0" text="        Clear heap" textAlignment="JUSTIFY" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
                                                                     <styleClass>
                                                                         <String fx:value="control-btn" />
                                                                         <String fx:value="control-btn-left" />
@@ -98,7 +98,7 @@
                                                     <content>
                                                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="178.0">
                                                             <children>
-                                                                <TextField fx:id="turnValue" layoutX="8.0" layoutY="14.0" prefHeight="32.0" prefWidth="119.0" />
+                                                                <TextField fx:id="turnValue" layoutX="8.0" layoutY="14.0" prefHeight="32.0" prefWidth="119.0" promptText="Steps count" />
                                                                 <Button id="play" layoutX="131.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#autoMode" prefHeight="30.0" prefWidth="30.0" styleClass="animation-btn" text="▶" AnchorPane.topAnchor="2.0" />
                                                                 <VBox layoutX="14.0" layoutY="66.0" spacing="10.0" AnchorPane.topAnchor="45.0">
                                                                     <children>
@@ -177,9 +177,9 @@
                 <Menu fx:id="viewMenu" mnemonicParsing="false" text="View">
                     <items>
                         <CheckMenuItem mnemonicParsing="false" onAction="#setAnimation" text="No animation" />
-                        <MenuItem mnemonicParsing="false" onAction="#zoomIn" text="Zoom in" />
-                        <MenuItem mnemonicParsing="false" onAction="#zoomOut" text="Zoom out" />
-                        <MenuItem mnemonicParsing="false" onAction="#setDefault" text="Set default" />
+                        <MenuItem mnemonicParsing="false" onAction="#zoomIn" text="Zoom in size" />
+                        <MenuItem mnemonicParsing="false" onAction="#zoomOut" text="Zoom out size" />
+                        <MenuItem mnemonicParsing="false" onAction="#setDefault" text="Set default size" />
                     </items>
                 </Menu>
             </menus>

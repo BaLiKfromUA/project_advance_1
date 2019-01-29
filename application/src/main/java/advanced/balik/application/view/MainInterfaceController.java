@@ -12,7 +12,9 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -21,6 +23,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -118,7 +121,11 @@ public class MainInterfaceController {
                 if (!turns.isEmpty()) {
                     ++step;
                     if (turns.get(0) == 1) {
-                        insertWithoutAnimation();
+                        if (isMaxSize()) {
+                            stop();
+                        } else {
+                            insertWithoutAnimation();
+                        }
                     } else {
                         getMinWithoutAnimation();
                     }
@@ -133,6 +140,31 @@ public class MainInterfaceController {
         this.turns = new ArrayList<>();
     }
 
+    private boolean isMaxSize() {
+        final int MAX_SIZE = 50;
+        return heapGraph.getContent().lookupAll(".cell").size() == MAX_SIZE;
+    }
+
+    @FXML
+    private Button insertFindButton;
+    @FXML
+    private Button getMinButton;
+    @FXML
+    private Button randomInsertButton;
+    @FXML
+    private Button clearButton;
+
+
+    @FXML
+    private RadioButton insertButton;
+    @FXML
+    private RadioButton minButton;
+    @FXML
+    private RadioButton randomButton;
+
+    @FXML
+    private ToggleButton stepButton;
+
     @FXML
     private void initialize() {
         Group content = heapGraph.getContent();
@@ -144,6 +176,38 @@ public class MainInterfaceController {
         // Adding Listener to value property.
         animationSlider.valueProperty().addListener((observable, oldValue, newValue) ->
                 AnimationDuration = newValue.intValue());
+
+
+        //BUTTON HINTS
+        insertFindButton.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        insertFindButton.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        insertFindButton.setTooltip(new Tooltip(Hints.INSERT.getHint()));
+
+        getMinButton.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        getMinButton.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        getMinButton.setTooltip(new Tooltip(Hints.MIN.getHint()));
+
+        randomInsertButton.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        randomInsertButton.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        randomInsertButton.setTooltip(new Tooltip(Hints.RANDOM.getHint()));
+
+        clearButton.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        clearButton.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        clearButton.setTooltip(new Tooltip(Hints.CLEAR.getHint()));
+
+        stepButton.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        stepButton.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        stepButton.setTooltip(new Tooltip(Hints.STEP_BACK.getHint()));
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -155,6 +219,11 @@ public class MainInterfaceController {
      **/
     @FXML
     private void insert() {
+        if (isMaxSize()) {
+            showError(Error.MAX_SIZE);
+            return;
+        }
+
         getInput(inputValue).ifPresent(value -> {
             if (!heapGraph.checkValue(value)) {
                 if (Math.abs(value) < 1000) {
@@ -172,7 +241,6 @@ public class MainInterfaceController {
                     showError(Error.TOO_BIG);
                 }
             } else {
-                ++step;
                 heapGraph.unselect();
                 heapGraph.findNode(value);
                 navigateToSelected();
@@ -186,10 +254,15 @@ public class MainInterfaceController {
      */
     @FXML
     public void insertRandom() {
-        ++step;
+        if (isMaxSize()) {
+            showError(Error.MAX_SIZE);
+            return;
+        }
+
         RANDOM.setSeed(System.currentTimeMillis());
         int randomValue = RANDOM.nextInt(UPPER_BOUND_RANDOM * 2) + LOWER_BOUND_RANDOM;
         if (!heapGraph.checkValue(randomValue)) {
+            ++step;
             if (isAnimation) {
                 insertInOtherThread(randomValue);
             } else {
@@ -323,7 +396,7 @@ public class MainInterfaceController {
         heapGraph.unselect();
         boolean isBack = heapGraph.stepBack();
         if (isBack) {
-            step++;
+            step--;
             logAction(Action.STEP_BACK.getAction());
         } else {
             log.error("Attempt to access non-existent version.");
@@ -352,6 +425,7 @@ public class MainInterfaceController {
     public void hideSideBar() {
         if (!sideBarToggle.isSelected()) {
             rightControlGroup.getChildren().remove(sideBar);
+            //sideBarToggle.se
         } else {
             rightControlGroup.getChildren().add(sideBar);
         }
@@ -410,9 +484,6 @@ public class MainInterfaceController {
         inputField.clear();
         return optional;
     }
-
-    @FXML
-    private ToggleButton stepButton;
 
     /**
      * Метод для отключения и включения кнопок боковой панели.
@@ -491,13 +562,6 @@ public class MainInterfaceController {
      * AUTO MODE
      **/
 
-    @FXML
-    private RadioButton insertButton;
-    @FXML
-    private RadioButton minButton;
-    @FXML
-    private RadioButton randomButton;
-
     private boolean onlyInsert;
     private boolean onlyMin;
     private boolean isAnimation = true;
@@ -510,17 +574,21 @@ public class MainInterfaceController {
     @FXML
     private void autoMode() {
         getInput(turnValue).ifPresent(value -> {
-            RANDOM.setSeed(System.currentTimeMillis());
-            for (int i = 0; i < value; ++i) {
-                if (!onlyMin && !onlyInsert) {
-                    turns.add(RANDOM.nextInt(2));
-                } else if (onlyInsert) {
-                    turns.add(1);
-                } else {
-                    turns.add(0);
+            if (value < 1 || value > 100) {
+                showError(Error.AUTO_INPUT_ERROR);
+            } else {
+                RANDOM.setSeed(System.currentTimeMillis());
+                for (int i = 0; i < value; ++i) {
+                    if (!onlyMin && !onlyInsert) {
+                        turns.add(RANDOM.nextInt(2));
+                    } else if (onlyInsert) {
+                        turns.add(1);
+                    } else {
+                        turns.add(0);
+                    }
                 }
+                play();
             }
-            play();
         });
     }
 

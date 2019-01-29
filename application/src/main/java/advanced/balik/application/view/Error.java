@@ -8,7 +8,9 @@ public enum Error {
             "It is impossible to increase vertex size."),
     MIN_CELL_SIZE("Minimum vertex size reached!",
             "It is impossible to decrease vertex size"),
-    TOO_BIG("Too big element!","Absolute value of element must not exceed 1000");
+    TOO_BIG("Too big element!","Absolute value of element must not exceed 1000"),
+    MAX_SIZE("Max heap size!","Max heap size is reached"),
+    AUTO_INPUT_ERROR("Invalid input","Count of steps should be > 0 and <= 100");
 
     private final String header;
     private final String message;
