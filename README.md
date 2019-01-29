@@ -7,6 +7,7 @@
 - [Слайды](https://www.slideshare.net/ssuser7e3173/ss-129386673)
 - [Видеодемонстрация](https://drive.google.com/file/d/1Pzt2YPQ2_Ga-GfuPmsVtnMpTskUlS7pa/view?usp=sharing)
 - [Скриншоты](https://github.com/BaLiKfromUA/project_advance_1/tree/master/docs/screenshots)
+- [Как запустить?](https://github.com/BaLiKfromUA/project_advance_1/blob/master/compiled-files/README.md)
 - [Консольная версия(руководство)](https://github.com/BaLiKfromUA/project_advance_1/blob/master/consoleApp/README.md)
 - Тесты(readme in progress)
 
