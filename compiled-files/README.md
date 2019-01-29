@@ -28,9 +28,9 @@ java -jar consoleApp-1.0-SNAPSHOT-jar-with-dependencies.jar -i 6 -i 8 -e min
 ## Установка оконного приложения
 Для установки визуализации на Windows воспользуйтесь установщиком 
 ```
-LeftistHeap-{last-version}-SNAPSHOT-{last-version}.msi
+LeftistHeap-{last-version}-SNAPSHOT-1.0.msi
 ```
-**Последняя версия - 1.0**
+**Последняя версия - 1.1**
 
 *Экзешник не советую запускать, т.к он не протестирован (:*
 
