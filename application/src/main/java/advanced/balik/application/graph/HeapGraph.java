@@ -236,6 +236,10 @@ public class HeapGraph {
     }
 
 
+    public PersistentLeftistHeap getPersistentTree() {
+        return persistentTree;
+    }
+
     /**
      * Получить вершину графа, выделенную на данный момент.
      * Если таковой нет, {@link Optional} должен хранить пустую ссылку (null).

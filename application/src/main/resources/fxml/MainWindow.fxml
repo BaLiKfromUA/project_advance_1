@@ -76,49 +76,38 @@
                                                         </VBox>
                                                     </children>
                                                 </AnchorPane>
-                                                <TitledPane fx:id="animationPane" animated="false" maxHeight="1.7976931348623157E308" prefHeight="81.0" prefWidth="183.0" text="Controllers">
+                                                <TitledPane fx:id="animationPane" animated="false" maxHeight="1.7976931348623157E308" prefHeight="340.0" prefWidth="183.0" text="Auto mode">
                                                     <padding>
                                                         <Insets left="3.0" />
                                                     </padding>
                                                     <content>
-                                                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="178.0">
+                                                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="157.0" prefWidth="178.0">
                                                             <children>
-                                                                <HBox layoutX="17.799999237060547" layoutY="17.799999237060547" spacing="16.0" AnchorPane.topAnchor="0.0">
+                                                                <HBox fx:id="animationBox" layoutX="17.799999237060547" layoutY="17.799999237060547" spacing="16.0" AnchorPane.topAnchor="150.0">
                                                                     <children>
                                                                         <Button id="play" layoutX="25.8" layoutY="25.8" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#play" prefHeight="30.0" prefWidth="30.0" styleClass="animation-btn" text="▶" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                                         <Button id="pause" layoutX="72.0" layoutY="13.0" mnemonicParsing="false" onAction="#pause" prefHeight="30.0" styleClass="animation-btn" text="||" AnchorPane.topAnchor="5.0" />
                                                                         <Button id="stop" layoutX="103.0" layoutY="35.8" mnemonicParsing="false" onAction="#stop" prefHeight="30.0" styleClass="animation-btn" text="■" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
                                                                     </children>
                                                                 </HBox>
+                                                <VBox fx:id="modeBox" layoutY="90.0" spacing="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
+                                                   <children>
+                                                      <RadioButton fx:id="insertButton" layoutX="15.0" layoutY="66.0" mnemonicParsing="false" onAction="#changeMode" text="Only insert" textFill="#dd8484" />
+                                                      <RadioButton fx:id="minButton" layoutX="15.0" layoutY="91.0" mnemonicParsing="false" onAction="#changeMode" text="Only min" textFill="#dd8484" />
+                                                      <RadioButton fx:id="randomButton" layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#changeMode" selected="true" text="Random action" textFill="#dd8484" />
+                                                   </children>
+                                                </VBox>
+                                                <Button id="play" fx:id="goAutoButton" layoutX="134.0" layoutY="58.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#autoMode" prefHeight="30.0" prefWidth="30.0" styleClass="animation-btn" text="▶" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                <TextField fx:id="turnValue" layoutX="13.0" layoutY="59.0" prefHeight="32.0" prefWidth="119.0" promptText="Steps count" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                             </children>
                                                         </AnchorPane>
                                                     </content>
-                                                </TitledPane>
-                                                <TitledPane animated="false" layoutX="10.0" layoutY="145.0" maxHeight="1.7976931348623157E308" prefHeight="220.0" prefWidth="183.0" text="Auto mode" VBox.vgrow="ALWAYS">
-                                                    <content>
-                                                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="120.0" prefWidth="178.0">
-                                                            <children>
-                                                                <TextField fx:id="turnValue" layoutX="8.0" layoutY="14.0" prefHeight="32.0" prefWidth="119.0" promptText="Steps count" />
-                                                                <Button id="play" layoutX="131.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#autoMode" prefHeight="30.0" prefWidth="30.0" styleClass="animation-btn" text="▶" AnchorPane.topAnchor="2.0" />
-                                                                <VBox layoutX="14.0" layoutY="66.0" spacing="10.0" AnchorPane.topAnchor="45.0">
-                                                                    <children>
-                                                                        <RadioButton fx:id="insertButton" layoutX="15.0" layoutY="66.0" mnemonicParsing="false" onAction="#changeMode" text="Only insert" textFill="#dd8484" />
-                                                                        <RadioButton fx:id="minButton" layoutX="15.0" layoutY="91.0" mnemonicParsing="false" onAction="#changeMode" text="Only min" textFill="#dd8484" />
-                                                                        <RadioButton fx:id="randomButton" layoutX="14.0" layoutY="121.0" mnemonicParsing="false" onAction="#changeMode" selected="true" text="Random action" textFill="#dd8484" />
-                                                                    </children>
-                                                                </VBox>
-                                                            </children>
-                                                        </AnchorPane>
-                                                    </content>
-                                                    <padding>
-                                                        <Insets left="3.0" />
-                                                    </padding>
                                                 </TitledPane>
                                             </children>
                                         </VBox>
                                         <ToggleButton fx:id="sideBarToggle" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#hideSideBar" prefHeight="335.0" selected="true" styleClass="hide-controls-button" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <graphic>
-                                                <Label styleClass="hide-controls" text="▼" />
+                                                <Label fx:id="sidebarLabel" styleClass="hide-controls" text="▼" />
                                             </graphic>
                                         </ToggleButton>
                                     </children>
@@ -157,7 +146,18 @@
                                                 <Font name="System Bold" size="16.0" />
                                             </font>
                                         </Label>
-                                        <Slider fx:id="animationSlider" blockIncrement="100.0" layoutX="14.0" layoutY="2.0" max="5000.0" min="100.0" prefHeight="45.0" prefWidth="165.0" value="1000.0" AnchorPane.bottomAnchor="90.0" AnchorPane.leftAnchor="14.0" />
+                                        <Slider fx:id="animationSlider" blockIncrement="100.0" layoutX="14.0" layoutY="2.0" max="5000.0" min="100.0" prefHeight="45.0" prefWidth="165.0" value="1000.0" AnchorPane.bottomAnchor="75.0" AnchorPane.leftAnchor="14.0" />
+                              <Label fx:id="animationLabel" layoutX="43.0" layoutY="34.0" text="Animation delay" textFill="#dd8484" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="10.0" />
+                              <MenuButton fx:id="stepChanger" layoutX="402.0" layoutY="8.0" mnemonicParsing="false" text="1" AnchorPane.rightAnchor="153.0" AnchorPane.topAnchor="8.0">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" onAction="#changeSteps" text="1" />
+                                  <MenuItem mnemonicParsing="false" onAction="#changeSteps" text="5" />
+                                    <MenuItem mnemonicParsing="false" onAction="#changeSteps" text="10" />
+                                    <MenuItem mnemonicParsing="false" onAction="#changeSteps" text="25" />
+                                    <MenuItem mnemonicParsing="false" onAction="#changeSteps" text="50" />
+                                </items>
+                              </MenuButton>
+                              <Label layoutX="402.0" layoutY="14.0" text="Step(s) back" textFill="#dd8484" AnchorPane.rightAnchor="218.0" AnchorPane.topAnchor="14.0" />
                                     </children>
                                 </AnchorPane>
                             </content>

@@ -93,8 +93,6 @@ public class MainInterfaceController {
     private ScrollPane viewArea;
 
     @FXML
-    private BorderPane workSpace;
-    @FXML
     private VBox sideBar;
     @FXML
     private ToggleButton sideBarToggle;
@@ -119,17 +117,25 @@ public class MainInterfaceController {
             DURATION,
             actionEvent -> {
                 if (!turns.isEmpty()) {
-                    ++step;
                     if (turns.get(0) == 1) {
                         if (isMaxSize()) {
                             stop();
                         } else {
+                            ++step;
                             insertWithoutAnimation();
                         }
                     } else {
+                        if (!heapGraph.getPersistentTree().isEmpty()) {
+                            ++step;
+                        }
                         getMinWithoutAnimation();
                     }
-                    turns.remove(0);
+
+                    if (heapGraph.getPersistentTree().isEmpty() && !turns.contains(1)) {
+                        stop();
+                    } else {
+                        turns.remove(0);
+                    }
                 } else {
                     stop();
                 }
@@ -166,6 +172,12 @@ public class MainInterfaceController {
     private ToggleButton stepButton;
 
     @FXML
+    private Button goAutoButton;
+
+    @FXML
+    private Label animationLabel;
+
+    @FXML
     private void initialize() {
         Group content = heapGraph.getContent();
         board.getChildren().add(content);
@@ -173,10 +185,14 @@ public class MainInterfaceController {
         mode = new ArrayList<>(Arrays.asList(ViewMode.values()));
         currMode = ViewMode.STANDART;
         logAction(Action.EMPTY.getAction());
+        heapGraph.getPersistentTree().setCurrTurnLog(Action.EMPTY.getAction());
         // Adding Listener to value property.
-        animationSlider.valueProperty().addListener((observable, oldValue, newValue) ->
-                AnimationDuration = newValue.intValue());
-
+        animationSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            AnimationDuration = newValue.intValue();
+            animationLabel.setText(String.format(
+                    "Animation delay. Current delay: %d ms", newValue.intValue()
+            ));
+        });
 
         //BUTTON HINTS
         insertFindButton.setOnMouseEntered(event ->
@@ -208,6 +224,25 @@ public class MainInterfaceController {
         stepButton.setOnMouseExited(event ->
                 mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
         stepButton.setTooltip(new Tooltip(Hints.STEP_BACK.getHint()));
+
+        goAutoButton.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        goAutoButton.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        goAutoButton.setTooltip(new Tooltip(Hints.AUTO.getHint()));
+
+        hideConsoleToggle.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        hideConsoleToggle.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        hideConsoleToggle.setTooltip(new Tooltip(Hints.CONSOLE.getHint()));
+
+        sideBarToggle.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        sideBarToggle.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        sideBarToggle.setTooltip(new Tooltip(Hints.SIDEBAR.getHint()));
+
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -234,7 +269,9 @@ public class MainInterfaceController {
                         heapGraph.addNode(value);
                         heapGraph.draw();
                         heapGraph.findNode(value);
-                        logAction(String.format(Action.INSERT.getAction(), value));
+                        final String logMessage = String.format(Action.INSERT.getAction(), value);
+                        logAction(logMessage);
+                        heapGraph.getPersistentTree().setCurrTurnLog(logMessage);
                     }
                 } else {
                     log.error(Error.TOO_BIG.getHeader());
@@ -281,7 +318,9 @@ public class MainInterfaceController {
             heapGraph.draw();
             heapGraph.unselect();
             heapGraph.findNode(randomValue);
-            logAction(String.format(Action.INSERT.getAction(), randomValue));
+            final String logMessage = String.format(Action.INSERT.getAction(), randomValue);
+            heapGraph.getPersistentTree().setCurrTurnLog(logMessage);
+            logAction(logMessage);
             navigateToSelected();
         } else {
             insertWithoutAnimation();
@@ -316,6 +355,8 @@ public class MainInterfaceController {
             Platform.runLater(() -> heapGraph.findNode(value));
             Platform.runLater(this::navigateToSelected);
             Platform.runLater(() -> logAction(String.format(Action.INSERT.getAction(), value)));
+            Platform.runLater(() -> heapGraph.getPersistentTree().setCurrTurnLog(String.format
+                    (Action.INSERT.getAction(), value)));
             Platform.runLater(() -> this.disableAll(false));
         });
 
@@ -364,6 +405,8 @@ public class MainInterfaceController {
                         heapGraph.unselect();
                         heapGraph.draw();
                         logAction(String.format(Action.EXTRACT_MIN.getAction(), min));
+                        heapGraph.getPersistentTree().setCurrTurnLog(String.format(Action.EXTRACT_MIN.getAction()
+                                , min));
                     });
 
                     Platform.runLater(() -> disableAll(false));
@@ -386,6 +429,8 @@ public class MainInterfaceController {
             heapGraph.draw();
             heapGraph.unselect();
             logAction(String.format(Action.EXTRACT_MIN.getAction(), min));
+            heapGraph.getPersistentTree().setCurrTurnLog(String.format(Action.EXTRACT_MIN.getAction(),
+                    min));
         } else {
             logAction(Action.EMPTY.getAction());
         }
@@ -393,14 +438,24 @@ public class MainInterfaceController {
 
     @FXML
     public void stepBack() {
-        heapGraph.unselect();
-        boolean isBack = heapGraph.stepBack();
-        if (isBack) {
-            step--;
-            logAction(Action.STEP_BACK.getAction());
-        } else {
-            log.error("Attempt to access non-existent version.");
-            showError(Error.NO_VERSIONS);
+        if (step - stepCount < 0) {
+            if (step == 0) {
+                log.error("Attempt to access non-existent version.");
+                showError(Error.NO_VERSIONS);
+            }else{
+                log.error("stepcount>step");
+                showError(Error.STEP_ERROR);
+            }
+            return;
+        }
+        int stepCountCopy = stepCount;
+        while (stepCountCopy > 0) {
+            heapGraph.unselect();
+            heapGraph.stepBack();
+            --step;
+            logAction(heapGraph.getPersistentTree().getCurrTurnLog());
+
+            --stepCountCopy;
         }
     }
 
@@ -417,6 +472,8 @@ public class MainInterfaceController {
         logAction(Action.CLEAR.getAction());
     }
 
+    @FXML
+    private Label sidebarLabel;
 
     /**
      * HIDE PANELS
@@ -425,9 +482,10 @@ public class MainInterfaceController {
     public void hideSideBar() {
         if (!sideBarToggle.isSelected()) {
             rightControlGroup.getChildren().remove(sideBar);
-            //sideBarToggle.se
+            sidebarLabel.setText("▲");
         } else {
             rightControlGroup.getChildren().add(sideBar);
+            sidebarLabel.setText("▼");
         }
     }
 
@@ -436,9 +494,11 @@ public class MainInterfaceController {
         if (hideConsoleToggle.isSelected()) {
             splitPane.setDividerPositions(1.0);
             lowerTab.getChildren().remove(consoleTab);
+            hideConsoleToggle.setText("▼");
         } else {
             splitPane.setDividerPositions(0.75);
             lowerTab.getChildren().add(consoleTab);
+            hideConsoleToggle.setText("▲");
         }
     }
 
@@ -463,6 +523,9 @@ public class MainInterfaceController {
         if (keyCode.equals(KeyCode.ENTER)) {
             insert();
         }
+        if (keyCode.equals(KeyCode.SHIFT)) {
+            autoMode();
+        }
     }
 
     /**
@@ -485,6 +548,9 @@ public class MainInterfaceController {
         return optional;
     }
 
+    @FXML
+    private VBox modeBox;
+
     /**
      * Метод для отключения и включения кнопок боковой панели.
      * Используется при запуске и остановке анимации.
@@ -499,6 +565,9 @@ public class MainInterfaceController {
                 .collect(Collectors.toSet());
         controls.forEach(node -> node.setDisable(disable));
         viewMenu.setDisable(disable);
+        modeBox.setDisable(disable);
+        goAutoButton.setDisable(disable);
+        turnValue.setDisable(disable);
         stepButton.setDisable(disable);
     }
 
@@ -670,5 +739,14 @@ public class MainInterfaceController {
         }
     }
 
+    private int stepCount = 1;
+    @FXML
+    private MenuButton stepChanger;
 
+    @FXML
+    public void changeSteps(ActionEvent event) {
+        MenuItem item = (MenuItem) event.getSource();
+        stepCount = Integer.parseInt(item.getText());
+        stepChanger.setText(String.valueOf(stepCount));
+    }
 }

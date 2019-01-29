@@ -5,7 +5,10 @@ public enum Hints {
     MIN("Find minimum element and remove it from the heap."),
     RANDOM("Add random item to the heap."),
     CLEAR("Make heap empty"),
-    STEP_BACK("Return current state to previous");
+    STEP_BACK("Return current state to previous"),
+    AUTO("Start auto mode running"),
+    CONSOLE("Hide/show console"),
+    SIDEBAR("Hide/show sidebar");
 
     private final String hint;
 

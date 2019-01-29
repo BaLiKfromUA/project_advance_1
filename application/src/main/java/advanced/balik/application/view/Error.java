@@ -10,7 +10,8 @@ public enum Error {
             "It is impossible to decrease vertex size"),
     TOO_BIG("Too big element!","Absolute value of element must not exceed 1000"),
     MAX_SIZE("Max heap size!","Max heap size is reached"),
-    AUTO_INPUT_ERROR("Invalid input","Count of steps should be > 0 and <= 100");
+    AUTO_INPUT_ERROR("Invalid input","Count of steps should be > 0 and <= 100"),
+    STEP_ERROR("No previous versions for this heap!","Step(s) back value > steps number");
 
     private final String header;
     private final String message;

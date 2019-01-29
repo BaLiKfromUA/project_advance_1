@@ -9,6 +9,15 @@ public class PersistentLeftistHeap {
     private LeftHeapNode root;
     private PersistentLeftistHeap previous;
     private ArrayList<Turn> mergeLog;
+    private String currTurnLog;
+
+    public String getCurrTurnLog() {
+        return currTurnLog;
+    }
+
+    public void setCurrTurnLog(String currTurnLog) {
+        this.currTurnLog = currTurnLog;
+    }
 
     private PersistentLeftistHeap(LeftHeapNode node, PersistentLeftistHeap prev) {
         root = node;
