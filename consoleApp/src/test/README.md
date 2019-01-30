@@ -1,7 +1,7 @@
 # Тестирование
 
 ## Предисловие
-Все тесты описанные в этом разделе выполнены с помощью фреймворка JUnit. 
+Все тесты описанные в этом разделе выполнены с помощью фреймворка JUnit4. 
 **Почему?**
 Потому что это удобнее и даёт более правдивую информацию, 
 т.к мой самописный тестер обрабатывает строки, а это очень дорого в Java. 
@@ -23,7 +23,7 @@
 Для каждого размера выполняются **13** видов тестов, которые будут описаны ниже.
 
 ### 1) Compare with PriorityQueue
-Java предоставляет свою реализации приоритетной очереди в пакете Collections. Насколько мне известно, под капотом
+Java предоставляет свою реализацию приоритетной очереди в пакете Collections. Насколько мне известно, под капотом
 там бинарная куча. Так что можем сравнить результаты одних и тех же операций в нашей куче и куче джавы:)
 Для этого я решил запустить цикл от **0** до **size-1**, где size зависит от типа теста по размеру.
 На каждом шаге цикла мы добавляем текущий индекс в наши кучи и проверяем минимальный элемент. Как можно догадаться, он должен быть одинаков:)
@@ -54,7 +54,7 @@ Java предоставляет свою реализации приоритет
     
 ```
 
-Данный тест показывает что наша самописная очередь идейно работает верно.
+**Данный тест показывает что наша самописная очередь идейно работает верно.**
 
 ### 2) Insert negative increasing numbers
 Данный тест являеться первым из семейства тестов с спадающими/возврастающими последовательностями.
@@ -90,10 +90,13 @@ Java предоставляет свою реализации приоритет
     }
     
 ``` 
-Данный тест (как и следующий) показывает что куча правильно работает с отрицательными числами
+
+**Данный тест (как и следующий) показывает что куча правильно работает с отрицательными числами
+и правильно их возвращает.**
 ### 3) Insert decreasing negative numbers
-Похожий тест, но теперь числа вводяться в порядке от **0** до *-(size-1)*. И минимальным после каждого шага будет 
+Похожий тест, но теперь числа вводяться в порядке от **0** до **-(size-1)**. И минимальным после каждого шага будет 
 последний добавленный элемент.
+После ввода, извлекаем все элементы из кучи и проверяем их порядок(должно быть по возрастанию).
 Исходный код теста: 
 ```
     @Test
@@ -104,6 +107,73 @@ Java предоставляет свою реализации приоритет
             heap.insert(-i);
             expected.add(-i);
             assertEquals("Min should be -index:", -i, heap.getMin());
+        }
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+
+```
+### 4) Insert increasing positive numbers
+Вводим числа в порядке от **0** до **size-1**. На каждом шаге проверяем минимальный элемент(всегда должен быть 0).
+После ввода, извлекаем все элементы из кучи и проверяем их порядок(должно быть по возрастанию).
+Исходный код теста:
+```
+    @Test
+    @DisplayName("Increasing positive elements test")
+    public void insertIncreasing() {
+        List<Integer> expected = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            heap.insert(i);
+            expected.add(i);
+            assertEquals("Min should be 0:", 0, heap.getMin());
+        }
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+```
+
+**Данный тест (как и следующий) показывает что куча правильно работает с положительными числами
+и правильно их возвращает.**
+
+### 5) Insert decreasing positive numbers
+Похожий тест, но теперь числа вводяться в порядке от **size-1** до **0**. И минимальным после каждого шага будет 
+последний добавленный элемент. После ввода, извлекаем все элементы из кучи и проверяем их порядок(должно быть по возрастанию).
+Исходный код теста: 
+```
+    @Test
+    @DisplayName("Decreasing positive elements test")
+    public void insertDecreasing() {
+        List<Integer> expected = new ArrayList<>();
+        for (int i = size; i > 0; --i) {
+            heap.insert(i);
+            expected.add(i);
+            assertEquals("Min should be current index:", i, heap.getMin());
         }
 
         Integer[] expectedArray = new Integer[expected.size()];
