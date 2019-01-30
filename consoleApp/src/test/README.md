@@ -57,7 +57,7 @@ Java предоставляет свою реализацию приоритет
 **Данный тест показывает что наша самописная очередь идейно работает верно.**
 
 ### 2) Insert negative increasing numbers
-Данный тест являеться первым из семейства тестов с спадающими/возврастающими последовательностями.
+Данный тест являеться первым из семейства тестов с убывающими/возврастающими последовательностями.
 Что мы делаем? Мы добавляем в кучу элементы начиная с **-(size-1)** до **0**. И после каждого добавления
 проверяем минимальный элемент. Очевидно, что это всегда должен быть **-(size-1)**. После добавления всех элементов
 мы опустошаем кучу в массив и проверяем что элементы в правильном порядке(по возрастанию).
@@ -91,7 +91,7 @@ Java предоставляет свою реализацию приоритет
     
 ``` 
 
-**Данный тест (как и следующий) показывает что куча правильно работает с отрицательными числами
+**Данный тест (как и следующий) показывает что куча правильно работает с отрицательными числами,
 и правильно их возвращает.**
 ### 3) Insert decreasing negative numbers
 Похожий тест, но теперь числа вводяться в порядке от **0** до **-(size-1)**. И минимальным после каждого шага будет 
@@ -158,7 +158,7 @@ Java предоставляет свою реализацию приоритет
     }
 ```
 
-**Данный тест (как и следующий) показывает что куча правильно работает с положительными числами
+**Данный тест (как и следующий) показывает что куча правильно работает с положительными числами,
 и правильно их возвращает.**
 
 ### 5) Insert decreasing positive numbers
@@ -194,3 +194,65 @@ Java предоставляет свою реализацию приоритет
 
 ```
 
+### 6) Insert zero
+Добавляем 0 **size** раз. 
+После каждого раза проверяем ноль ли минимум:)
+Так же потом извлекаем все нули и проверяем не потеряли ли что-то.
+Исходный код:
+```
+    @Test
+    @DisplayName("Zero Test")
+    public void insertZero() {
+        Integer[] expectedArray = new Integer[size];
+        Arrays.fill(expectedArray, 0);
+
+        for (int i = 0; i < size; ++i) {
+            heap.insert(0);
+            assertEquals("Min should be 0:", 0, heap.getMin());
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+```
+**Данный тест проверяет правильно ли работает наша куча с одинаковыми элементами**
+
+### 7)Insert same random
+Такая же механика как и в **6** тесте, только вставляем один и тот же **случайный 
+элемент**
+Исходный код:
+```
+    @Test
+    @DisplayName("Same Random Test")
+    public void insertOneRandomNumber() {
+        RANDOM.setSeed(System.currentTimeMillis());
+        final int randomNumber = RANDOM.nextInt(UPPER_BOUND_RANDOM * 2) + LOWER_BOUND_RANDOM;
+        Integer[] expectedArray = new Integer[size];
+        Arrays.fill(expectedArray, randomNumber);
+
+        for (int i = 0; i < size; ++i) {
+            heap.insert(randomNumber);
+            assertEquals("Min should be your random number:", randomNumber, heap.getMin());
+        }
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+    
+```
