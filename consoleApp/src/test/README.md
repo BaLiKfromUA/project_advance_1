@@ -2,7 +2,7 @@
 
 ## Предисловие
 Все тесты описанные в этом разделе выполнены с помощью фреймворка JUnit. 
-**-Почему?**
+**Почему?**
 Потому что это удобнее и даёт более правдивую информацию, 
 т.к мой самописный тестер обрабатывает строки, а это очень дорого в Java. 
 
@@ -29,9 +29,9 @@ Java предоставляет свою реализации приоритет
 На каждом шаге цикла мы добавляем текущий индекс в наши кучи и проверяем минимальный элемент. Как можно догадаться, он должен быть одинаков:)
 После этого, мы пошагово опустошаем обе кучи и после каждого шага проверяем минимальный элемент в каждой куче.
 Ну и по окончанию проверяем что обе кучи пусты. 
-Код теста представлен ниже:
+Исходный код теста представлен ниже:
 ```
-   @Test
+    @Test
     @DisplayName("Compare with priority queue Test")
     public void insertCompareWithPriorityQueue() {
         PriorityQueue<Integer> javaPriorityQueue = new PriorityQueue<>();
@@ -55,3 +55,72 @@ Java предоставляет свою реализации приоритет
 ```
 
 Данный тест показывает что наша самописная очередь идейно работает верно.
+
+### 2) Insert negative increasing numbers
+Данный тест являеться первым из семейства тестов с спадающими/возврастающими последовательностями.
+Что мы делаем? Мы добавляем в кучу элементы начиная с **-(size-1)** до **0**. И после каждого добавления
+проверяем минимальный элемент. Очевидно, что это всегда должен быть **-(size-1)**. После добавления всех элементов
+мы опустошаем кучу в массив и проверяем что элементы в правильном порядке(по возрастанию).
+Исходный код теста представлен ниже:
+```
+    @Test
+    @DisplayName("Increasing negative elements test")
+    public void insertNegativeIncreasing() {
+        List<Integer> expected = new ArrayList<>();
+        for (int i = size-1; i >= 0; --i) {
+            heap.insert(-i);
+            expected.add(-i);
+            assertEquals("Min should be -size:", -(size-1), heap.getMin());
+        }
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+    
+``` 
+Данный тест (как и следующий) показывает что куча правильно работает с отрицательными числами
+### 3) Insert decreasing negative numbers
+Похожий тест, но теперь числа вводяться в порядке от **0** до *-(size-1)*. И минимальным после каждого шага будет 
+последний добавленный элемент.
+Исходный код теста: 
+```
+    @Test
+    @DisplayName("Decreasing negative elements test")
+    public void insertNegativeDecreasing(){
+        List<Integer> expected = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            heap.insert(-i);
+            expected.add(-i);
+            assertEquals("Min should be -index:", -i, heap.getMin());
+        }
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+
+```
+

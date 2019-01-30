@@ -87,7 +87,7 @@ public class TestWithBigSize {
         for (int i = 0; i < size; ++i) {
             heap.insert(-i);
             expected.add(-i);
-            assertEquals("Min should be 0:", -i, heap.getMin());
+            assertEquals("Min should be -index:", -i, heap.getMin());
         }
 
         Integer[] expectedArray = new Integer[expected.size()];
