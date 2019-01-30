@@ -1,6 +1,7 @@
 package main.tests;
 
 import balik.advanced.consoleApp.heap.LeftistHeap;
+import balik.advanced.consoleApp.parser.Message;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.junit4.DisplayName;
@@ -19,12 +20,13 @@ import static org.junit.Assert.assertEquals;
 @Epic("Tests with medium amount of elements")
 @Feature("Number of elements is 5000")
 public class TestWithMediumSize {
+    private final int size = 5000;
 
     private static Logger logger = Logger.getLogger(TestWithMediumSize.class);
 
     private LeftistHeap heap;
 
-    private final int size = 5000;
+
 
     @Rule
     public MyJUnitStopWatch stopwatch = new MyJUnitStopWatch();
@@ -104,6 +106,7 @@ public class TestWithMediumSize {
 
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
+
 
     @Test
     @DisplayName("Increasing positive elements test")

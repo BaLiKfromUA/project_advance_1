@@ -1,6 +1,7 @@
 package main.tests;
 
 import balik.advanced.consoleApp.heap.LeftistHeap;
+import balik.advanced.consoleApp.parser.Message;
 import io.qameta.allure.junit4.DisplayName;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -9,17 +10,22 @@ import org.junit.Rule;
 import org.junit.Test;
 import util.MyJUnitStopWatch;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class TestWithExtraLargeSize {
+    private String sizeName = "extra-large";
+    private final int size = 5000000;
+
     private static Logger logger = Logger.getLogger(TestWithExtraLargeSize.class);
 
     private LeftistHeap heap;
-
-    private final int size = 5000000;
 
     @Rule
     public MyJUnitStopWatch stopwatch = new MyJUnitStopWatch();
@@ -99,6 +105,7 @@ public class TestWithExtraLargeSize {
 
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
+
 
     @Test
     @DisplayName("Increasing positive elements test")

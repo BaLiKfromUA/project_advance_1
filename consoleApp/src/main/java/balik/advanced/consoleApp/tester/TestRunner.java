@@ -77,8 +77,6 @@ class TestRunner {
         if (!validateInput) {
             return false;
         }
-        System.out.println(Arrays.toString(inputResults.toArray()));
-        System.out.println(Arrays.toString(answers.toArray()));
         return Arrays.equals(answers.toArray(), inputResults.toArray());
     }
 

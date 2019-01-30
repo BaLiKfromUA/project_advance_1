@@ -1,8 +1,6 @@
 package main.tests;
 
 import balik.advanced.consoleApp.heap.LeftistHeap;
-import balik.advanced.consoleApp.parser.Message;
-import io.qameta.allure.Description;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.junit4.DisplayName;
@@ -13,10 +11,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import util.MyJUnitStopWatch;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -24,13 +18,12 @@ import static org.junit.Assert.*;
 @Epic("Tests with small amount of elements")
 @Feature("Number of elements is 500")
 public class TestWithSmallSize {
-    private String sizeName = "small";
+    private final int size = 500;
+
 
     private static Logger logger = Logger.getLogger(TestWithSmallSize.class);
 
     private LeftistHeap heap;
-
-    private final int size = 500;
 
     @Rule
     public MyJUnitStopWatch stopwatch = new MyJUnitStopWatch();
@@ -62,184 +55,107 @@ public class TestWithSmallSize {
     @Test
     @DisplayName("Increasing negative elements test")
     public void insertNegativeIncreasing() {
-        try (Writer inputWriter = new FileWriter("./tests/input/" + sizeName + "/increasingNegative" + size + ".input");
-             BufferedWriter bufferedInputWriter = new BufferedWriter(inputWriter);
-             Writer answerWriter = new FileWriter("./tests/answers/" + sizeName + "/increasingNegative" + size + ".answer");
-             BufferedWriter bufferedAnswerWriter = new BufferedWriter(answerWriter)) {
-            List<Integer> expected = new ArrayList<>();
-            for (int i = size - 1; i >= 0; --i) {
-                heap.insert(-i);
-                expected.add(-i);
-                bufferedInputWriter.write(String.valueOf(-i));
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                assertEquals("Min should be -size:", -(size - 1), heap.getMin());
-                bufferedAnswerWriter.write(String.valueOf(heap.getMin()));
-                bufferedAnswerWriter.newLine();
-            }
-
-            Integer[] expectedArray = new Integer[expected.size()];
-            expectedArray = expected.toArray(expectedArray);
-            Arrays.sort(expectedArray);
-
-            List<Integer> result = new ArrayList<>();
-            for (int i = 0; i < size; ++i) {
-                result.add(heap.getMin());
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.DELETE_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedAnswerWriter.write(String.valueOf(heap.getMin()));
-                bufferedAnswerWriter.newLine();
-                heap.extractMin();
-            }
-
-            Integer[] resultArray = new Integer[result.size()];
-            resultArray = result.toArray(resultArray);
-
-            assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<Integer> expected = new ArrayList<>();
+        for (int i = size-1; i >= 0; --i) {
+            heap.insert(-i);
+            expected.add(-i);
+            assertEquals("Min should be -size:", -(size-1), heap.getMin());
         }
-    }//done
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
 
     @Test
     @DisplayName("Decreasing negative elements test")
-    public void insertNegativeDecreasing() {
-        try (Writer inputWriter = new FileWriter("./tests/input/" + sizeName + "/decreasingNegative" + size + ".input");
-             BufferedWriter bufferedInputWriter = new BufferedWriter(inputWriter);
-             Writer answerWriter = new FileWriter("./tests/answers/" + sizeName + "/decreasingNegative" + size + ".answer");
-             BufferedWriter bufferedAnswerWriter = new BufferedWriter(answerWriter)) {
-            List<Integer> expected = new ArrayList<>();
-            for (int i = 0; i < size; ++i) {
-                heap.insert(-i);
-                bufferedInputWriter.write(String.valueOf(-i));
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                expected.add(-i);
-                assertEquals("Min should be 0:", -i, heap.getMin());
-                bufferedAnswerWriter.write(String.valueOf(heap.getMin()));
-                bufferedAnswerWriter.newLine();
-            }
-
-            Integer[] expectedArray = new Integer[expected.size()];
-            expectedArray = expected.toArray(expectedArray);
-            Arrays.sort(expectedArray);
-
-            List<Integer> result = new ArrayList<>();
-            for (int i = 0; i < size; ++i) {
-                result.add(heap.getMin());
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.DELETE_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedAnswerWriter.write(String.valueOf(heap.getMin()));
-                bufferedAnswerWriter.newLine();
-                heap.extractMin();
-            }
-
-            Integer[] resultArray = new Integer[result.size()];
-            resultArray = result.toArray(resultArray);
-
-            assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    public void insertNegativeDecreasing(){
+        List<Integer> expected = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            heap.insert(-i);
+            expected.add(-i);
+            assertEquals("Min should be 0:", -i, heap.getMin());
         }
-        catch (IOException e){
-            e.printStackTrace();
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
         }
-    }//done
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+
 
     @Test
     @DisplayName("Increasing positive elements test")
     public void insertIncreasing() {
-        try (Writer inputWriter = new FileWriter("./tests/input/" + sizeName + "/increasingPositive" + size + ".input");
-             BufferedWriter bufferedInputWriter = new BufferedWriter(inputWriter);
-             Writer answerWriter = new FileWriter("./tests/answers/" + sizeName + "/increasingPositive" + size + ".answer");
-             BufferedWriter bufferedAnswerWriter = new BufferedWriter(answerWriter)) {
-            List<Integer> expected = new ArrayList<>();
-            for (int i = 0; i < size; ++i) {
-                heap.insert(i);
-                expected.add(i);
-                bufferedInputWriter.write(String.valueOf(i));
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                assertEquals("Min should be 0:", 0, heap.getMin());
-                bufferedAnswerWriter.write(String.valueOf(0));
-                bufferedAnswerWriter.newLine();
-            }
-
-            Integer[] expectedArray = new Integer[expected.size()];
-            expectedArray = expected.toArray(expectedArray);
-            Arrays.sort(expectedArray);
-
-            List<Integer> result = new ArrayList<>();
-            for (int i = 0; i < size; ++i) {
-                result.add(heap.getMin());
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.DELETE_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedAnswerWriter.write(String.valueOf(heap.getMin()));
-                bufferedAnswerWriter.newLine();
-                heap.extractMin();
-            }
-
-            Integer[] resultArray = new Integer[result.size()];
-            resultArray = result.toArray(resultArray);
-
-            assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+        List<Integer> expected = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            heap.insert(i);
+            expected.add(i);
+            assertEquals("Min should be 0:", 0, heap.getMin());
         }
-        catch (IOException e){
-            e.printStackTrace();
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
         }
-    }//done
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
 
     @Test
     @DisplayName("Decreasing positive elements test")
     public void insertDecreasing() {
-        try (Writer inputWriter = new FileWriter("./tests/input/" + sizeName + "/decreasingPositive" + size + ".input");
-             BufferedWriter bufferedInputWriter = new BufferedWriter(inputWriter);
-             Writer answerWriter = new FileWriter("./tests/answers/" + sizeName + "/decreasingPositive" + size + ".answer");
-             BufferedWriter bufferedAnswerWriter = new BufferedWriter(answerWriter)) {
-            List<Integer> expected = new ArrayList<>();
-            for (int i = size; i > 0; --i) {
-                heap.insert(i);
-                bufferedInputWriter.write(String.valueOf(i));
-                bufferedInputWriter.newLine();
-                expected.add(i);
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                assertEquals("Min should be current index:", i, heap.getMin());
-                bufferedAnswerWriter.write(String.valueOf(i));
-                bufferedAnswerWriter.newLine();
-            }
-
-            Integer[] expectedArray = new Integer[expected.size()];
-            expectedArray = expected.toArray(expectedArray);
-            Arrays.sort(expectedArray);
-
-            List<Integer> result = new ArrayList<>();
-            for (int i = 0; i < size; ++i) {
-                result.add(heap.getMin());
-                bufferedInputWriter.write(Message.GET_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedInputWriter.write(Message.DELETE_MIN.getMessage());
-                bufferedInputWriter.newLine();
-                bufferedAnswerWriter.write(String.valueOf(heap.getMin()));
-                bufferedAnswerWriter.newLine();
-                heap.extractMin();
-            }
-
-            Integer[] resultArray = new Integer[result.size()];
-            resultArray = result.toArray(resultArray);
-
-            assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
-        } catch (IOException e) {
-            e.printStackTrace();
+        List<Integer> expected = new ArrayList<>();
+        for (int i = size; i > 0; --i) {
+            heap.insert(i);
+            expected.add(i);
+            assertEquals("Min should be current index:", i, heap.getMin());
         }
-    }//done
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
 
     @Test
     @DisplayName("Zero Test")
