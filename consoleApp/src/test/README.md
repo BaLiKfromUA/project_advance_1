@@ -415,7 +415,7 @@ Java предоставляет свою реализацию приоритет
 Для тестов размером от **500** до **50000** было выставлено ограничение в секунду для каждого теста.
 
 Для тестов размером **500000** было выставлено ограничение в 2 секунды. Исключением был только тест со сравнением с очередью
-(т.к. та 2 кучи,то поставил 2.5 секунды ограничения).
+(т.к. там 2 кучи,то поставил 2.5 секунды ограничения).
 
 Для самых больших тестов(**5000000**) ограничение решил не ставить, т.к эти тесты очень сильно зависят от железа и настроек
 виртуальной машины. Так что какое то оптимальное ограничение придумать сложно.
@@ -432,7 +432,7 @@ Java предоставляет свою реализацию приоритет
 
 ## Тестирование консоли
 Так как нам нужно парсить командную строку, то нужен удобный парсер. 
-Для парсинга строки я выбрал свежий фреймворк [Picocli](https://picocli.info/), т.к он активно обновляеться и функционал
+Для парсинга строки я выбрал свежий фреймворк [Picocli](https://picocli.info/), т.к он активно обновляется и функционал
 с документацией радует.
 
 Парсер файлов и тестов я написал сам, функционал минимально необходимый и оттестирован.
@@ -441,3 +441,90 @@ Java предоставляет свою реализацию приоритет
 то ошибка будет и в приложении.
 
 Документацию к командам можно найти [тут](https://github.com/BaLiKfromUA/project_advance_1/blob/master/consoleApp/README.md), так что не буду описывать синтаксис.
+
+### Правильные тесты
+- Для начала, стоит протестировать команды **insert** и **extract min**. Делается это в следующих
+двух тестах:
+```
+    @Test
+    public void testOnlyInsert() {
+        final String[] args = {"-i", "5", "-i", "6", "-i", "5", "-i", "1", "-i", "2", "-i", "3"};
+        final String expectedOut = "Inserting 5\n" +
+                "Inserting 6\n" +
+                "Inserting 5\n" +
+                "Inserting 1\n" +
+                "Inserting 2\n" +
+                "Inserting 3\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+
+    @Test
+    public void testInsertAndExtract() {
+        final String[] args = {"-e", "min", "-i", "6", "-i", "5", "-i", "1", "-e", "min", "-e", "min"};
+        final String expectedOut = "Heap is empty!\n" +
+                "Inserting 6\n" +
+                "Inserting 5\n" +
+                "Inserting 1\n" +
+                "Min number is 1\n" +
+                "Min number is 5\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+- Проверим считавание команд с файла
+
+Содержание файла **test_3.txt**:
+```
+-e min
+-e min
+-i 3
+-e min
+```
+Исходный код теста:
+```
+    @Test
+    public void testOnlyFile() {
+        final String[] args = {"-f", "./src/main/resources/test_3.txt"};
+        final String expectedOut = "Heap is empty!\n" +
+                "Heap is empty!\n" +
+                "Inserting 3\n" +
+                "Min number is 3\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+- Проверка правильного пользовательского теста
+
+Содержание файла **inputTest.txt**
+```
+1
+2
+3
+min
+extractMin
+min
+extractMin
+min
+extractMin
+```
+Содержание файла **outputTest.txt**
+```
+1
+2
+3
+```
+Исходный код теста:
+```
+   @Test
+    public void testCorrect() {
+        final String[] args = {"-t", "./src/main/resources/inputTest.txt,./src/main/resources/outputTest.txt"};
+        final String expectedOut = Message.TEST_OK.getMessage() + "\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+### Неправильные тесты
