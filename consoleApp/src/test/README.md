@@ -297,7 +297,7 @@ Java предоставляет свою реализацию приоритет
 ```
 **Данный тест проверяет отсутствие влияния вывода минимума на элементы в куче.**
 
-### 10) Empty Heap Test
+### 10) Empty heap test
 А что если пусто? Забыл сказать, что если куча пуста, то минимум будет возвращать число -1(в 
 консоли выводит сообщение что куча пуста). 
 Так вот, попробуем *size* раз вывести минимум, а потом его извлечь. Упадет ли куча?
@@ -313,4 +313,77 @@ Java предоставляет свою реализацию приоритет
     }
 ```
 **Данный тест проверяет устойчивость пустой кучи к запросам.**
+### 11) Insert-extract increasing test
+Добавляем в кучу числа от **0** до **size-1**. После каждого добавления проверяем минимум, добавляем 
+элемент на единицу больше текущего, опять проверяем минимум, извлекаем его и опять проверяем новый минимум.
+После этого опять извлекаем его.
+Исходный код теста:
+```
+    @Test
+    @DisplayName("Insert-Extract Increasing Test")
+    public void insertExtractIncreasing() {
+        for (int i = 0; i < size; ++i) {
+            heap.insert(i);
+            assertEquals("Min should be current index:", i, heap.getMin());
+            heap.insert(i + 1);
+            assertEquals("Min should be current index:", i, heap.getMin());
+            heap.extractMin();
+            assertEquals("Min should be current index+1:", i + 1, heap.getMin());
+            heap.extractMin();
+        }
+    }
+
+```
+**Данный тест похож на 8, но тут комбинация немного сложнее и стоило проверить правильность ее выполнения.**
+
+### 12) Insert-extract test with random values
+Почти аналогично с 11 тестом, но теперь мы каждый раз случайное число, а значит минимум не всегда будет на единицу меньше
+Исходный код:
+```
+    @Test
+    @DisplayName("Insert-Extract test with random values")
+    public void insertExtractRandom() {
+        int previousElement = -1;
+        RANDOM.setSeed(System.currentTimeMillis());
+        for (int i = 0; i < size; ++i) {
+            assertEquals("Min should be previous random element:", previousElement, heap.getMin());
+            heap.extractMin();
+            previousElement = RANDOM.nextInt(UPPER_BOUND_RANDOM * 2) + LOWER_BOUND_RANDOM;
+            heap.insert(previousElement);
+        }
+    }
+```
+
+### 13) Insert random test
+Добавляем **size** случайных чисел в кучу. Потом извлекаем их и проверяем их порядок(должно быть по возрастанию)
+Исходный код:
+```
+    @Test
+    @DisplayName("Insert Random Test")
+    public void insertRandom() {
+        List<Integer> expected = new ArrayList<>();
+        RANDOM.setSeed(System.currentTimeMillis());
+        for (int i = 0; i < size; ++i) {
+            final int randomValue = RANDOM.nextInt(UPPER_BOUND_RANDOM * 2) + LOWER_BOUND_RANDOM;
+            heap.insert(randomValue);
+            expected.add(randomValue);
+        }
+
+        Integer[] expectedArray = new Integer[expected.size()];
+        expectedArray = expected.toArray(expectedArray);
+        Arrays.sort(expectedArray);
+
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < size; ++i) {
+            result.add(heap.getMin());
+            heap.extractMin();
+        }
+
+        Integer[] resultArray = new Integer[result.size()];
+        resultArray = result.toArray(resultArray);
+
+        assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
+    }
+```
+**Данный тест проверяет правильность извлечения абсолютно случайных данных**
 

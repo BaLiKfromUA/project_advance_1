@@ -256,7 +256,7 @@ public class TestWithBigSize {
     }
 
     @Test
-    @DisplayName("Insert-Extract Increasing Test with random values")
+    @DisplayName("Insert-Extract test with random values")
     public void insertExtractRandom() {
         int previousElement = -1;
         RANDOM.setSeed(System.currentTimeMillis());
