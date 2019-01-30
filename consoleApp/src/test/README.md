@@ -198,7 +198,7 @@ Java предоставляет свою реализацию приоритет
 Добавляем 0 **size** раз. 
 После каждого раза проверяем ноль ли минимум:)
 Так же потом извлекаем все нули и проверяем не потеряли ли что-то.
-Исходный код:
+Исходный код теста:
 ```
     @Test
     @DisplayName("Zero Test")
@@ -225,10 +225,10 @@ Java предоставляет свою реализацию приоритет
 ```
 **Данный тест проверяет правильно ли работает наша куча с одинаковыми элементами**
 
-### 7)Insert same random
+### 7) Insert same random
 Такая же механика как и в **6** тесте, только вставляем один и тот же **случайный 
-элемент**
-Исходный код:
+элемент**.
+Исходный код теста:
 ```
     @Test
     @DisplayName("Same Random Test")
@@ -256,3 +256,43 @@ Java предоставляет свою реализацию приоритет
     }
     
 ```
+
+### 8) Insert-extract
+Добавляем в кучу элементы от **0** до **size-1**. После каждого добавления проверяем минимум и извлекаем его.
+Минимум на каждом шаге должен быть последним добавленным элементом. Так же после каждого добавления и в конце теста
+проверяем пуста ли куча.
+Исходный код теста:
+```
+    @Test
+    @DisplayName("Insert-extract test")
+    public void insertExtract() {
+        for (int i = 0; i < size; ++i) {
+            heap.insert(i);
+            assertEquals("Min should be current index:", i, heap.getMin());
+            heap.extractMin();
+            assertTrue("Heap should be empty:", heap.isEmpty());
+        }
+
+        assertEquals("Min should be -1:", -1, heap.getMin());
+        assertTrue("Heap should be empty:", heap.isEmpty());
+    }
+```
+**Данный тест проверяет правильно ли добавление и извлечение элемента взаимодействуют вместе.
+Так же мы проверяем не осталось ли что-то в куче после удаления всех элементов**
+
+### 9) Get min test
+Добавляем случайный элемент в кучу и **size** раз проверяем минимум в куче. 
+Исходный код теста:
+```
+    @Test
+    @DisplayName("GetMin Test")
+    public void getMinFromOneElementHeap() {
+        RANDOM.setSeed(System.currentTimeMillis());
+        final int randomNumber = RANDOM.nextInt(UPPER_BOUND_RANDOM * 2) + LOWER_BOUND_RANDOM;
+        heap.insert(randomNumber);
+        for (int i = 0; i < size; ++i) {
+            assertEquals("Min should be your random number:", randomNumber, heap.getMin());
+        }
+    }
+```
+**Данный тест проверяет отсутствие влияния вывода минимума на элементы в куче.**
