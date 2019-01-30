@@ -55,7 +55,7 @@ public class TestWithMediumSize {
         heap = new LeftistHeap();
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Increasing negative elements test")
     public void insertNegativeIncreasing() {
         List<Integer> expected = new ArrayList<>();
@@ -81,7 +81,7 @@ public class TestWithMediumSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Decreasing negative elements test")
     public void insertNegativeDecreasing(){
         List<Integer> expected = new ArrayList<>();
@@ -108,7 +108,7 @@ public class TestWithMediumSize {
     }
 
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Increasing positive elements test")
     public void insertIncreasing() {
         List<Integer> expected = new ArrayList<>();
@@ -134,7 +134,7 @@ public class TestWithMediumSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Decreasing positive elements test")
     public void insertDecreasing() {
         List<Integer> expected = new ArrayList<>();
@@ -160,7 +160,7 @@ public class TestWithMediumSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Zero Test")
     public void insertZero() {
         Integer[] expectedArray = new Integer[size];
@@ -183,7 +183,7 @@ public class TestWithMediumSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Same Random Test")
     public void insertOneRandomNumber() {
         RANDOM.setSeed(System.currentTimeMillis());
@@ -208,7 +208,7 @@ public class TestWithMediumSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Insert-extract test")
     public void insertExtract() {
         for (int i = 0; i < size; ++i) {
@@ -222,7 +222,7 @@ public class TestWithMediumSize {
         assertTrue("Heap should be empty:", heap.isEmpty());
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("GetMin Test")
     public void getMinFromOneElementHeap() {
         RANDOM.setSeed(System.currentTimeMillis());
@@ -233,7 +233,7 @@ public class TestWithMediumSize {
         }
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Empty Heap Test")
     public void extractFromEmptyHeap() {
         for (int i = 0; i < size; ++i) {
@@ -242,7 +242,7 @@ public class TestWithMediumSize {
         }
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Insert-Extract Increasing Test")
     public void insertExtractIncreasing() {
         for (int i = 0; i < size; ++i) {
@@ -256,7 +256,7 @@ public class TestWithMediumSize {
         }
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Insert-Extract Increasing Test with random values")
     public void insertExtractRandom() {
         int previousElement = -1;
@@ -269,7 +269,7 @@ public class TestWithMediumSize {
         }
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Insert Random Test")
     public void insertRandom() {
         List<Integer> expected = new ArrayList<>();
@@ -296,7 +296,7 @@ public class TestWithMediumSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 1000)
     @DisplayName("Compare with priority queue Test")
     public void insertCompareWithPriorityQueue() {
         PriorityQueue<Integer> javaPriorityQueue = new PriorityQueue<>();

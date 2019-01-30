@@ -1,7 +1,6 @@
 package main.tests;
 
 import balik.advanced.consoleApp.heap.LeftistHeap;
-import balik.advanced.consoleApp.parser.Message;
 import io.qameta.allure.junit4.DisplayName;
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -10,17 +9,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import util.MyJUnitStopWatch;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
 import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class TestWithLargeSize {
-    private String sizeName = "large";
     private final int size = 500000;
 
     private static Logger logger = Logger.getLogger(TestWithLargeSize.class);
@@ -54,7 +47,7 @@ public class TestWithLargeSize {
         heap = new LeftistHeap();
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Increasing negative elements test")
     public void insertNegativeIncreasing() {
         List<Integer> expected = new ArrayList<>();
@@ -80,7 +73,7 @@ public class TestWithLargeSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Decreasing negative elements test")
     public void insertNegativeDecreasing(){
         List<Integer> expected = new ArrayList<>();
@@ -107,7 +100,7 @@ public class TestWithLargeSize {
     }
 
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Increasing positive elements test")
     public void insertIncreasing() {
         List<Integer> expected = new ArrayList<>();
@@ -133,7 +126,7 @@ public class TestWithLargeSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Decreasing positive elements test")
     public void insertDecreasing() {
         List<Integer> expected = new ArrayList<>();
@@ -159,7 +152,7 @@ public class TestWithLargeSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Zero Test")
     public void insertZero() {
         Integer[] expectedArray = new Integer[size];
@@ -182,7 +175,7 @@ public class TestWithLargeSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Same Random Test")
     public void insertOneRandomNumber() {
         RANDOM.setSeed(System.currentTimeMillis());
@@ -207,7 +200,7 @@ public class TestWithLargeSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Insert-extract test")
     public void insertExtract() {
         for (int i = 0; i < size; ++i) {
@@ -221,7 +214,7 @@ public class TestWithLargeSize {
         assertTrue("Heap should be empty:", heap.isEmpty());
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("GetMin Test")
     public void getMinFromOneElementHeap() {
         RANDOM.setSeed(System.currentTimeMillis());
@@ -232,7 +225,7 @@ public class TestWithLargeSize {
         }
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Empty Heap Test")
     public void extractFromEmptyHeap() {
         for (int i = 0; i < size; ++i) {
@@ -241,7 +234,7 @@ public class TestWithLargeSize {
         }
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Insert-Extract Increasing Test")
     public void insertExtractIncreasing() {
         for (int i = 0; i < size; ++i) {
@@ -255,7 +248,7 @@ public class TestWithLargeSize {
         }
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Insert-Extract Increasing Test with random values")
     public void insertExtractRandom() {
         int previousElement = -1;
@@ -268,7 +261,7 @@ public class TestWithLargeSize {
         }
     }
 
-    @Test
+    @Test(timeout = 2000)
     @DisplayName("Insert Random Test")
     public void insertRandom() {
         List<Integer> expected = new ArrayList<>();
@@ -295,7 +288,7 @@ public class TestWithLargeSize {
         assertArrayEquals("Arrays should be equal", expectedArray, resultArray);
     }
 
-    @Test
+    @Test(timeout = 3000)
     @DisplayName("Compare with priority queue Test")
     public void insertCompareWithPriorityQueue() {
         PriorityQueue<Integer> javaPriorityQueue = new PriorityQueue<>();
