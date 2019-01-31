@@ -9,5 +9,5 @@
 - [Скриншоты](https://github.com/BaLiKfromUA/project_advance_1/tree/master/docs/screenshots)
 - [Как запустить?](https://github.com/BaLiKfromUA/project_advance_1/blob/master/compiled-files/README.md)
 - [Консольная версия(руководство)](https://github.com/BaLiKfromUA/project_advance_1/blob/master/consoleApp/README.md)
-- [Тесты(readme in progress)](https://github.com/BaLiKfromUA/project_advance_1/blob/master/consoleApp/src/test/README.md)
+- [Тесты](https://github.com/BaLiKfromUA/project_advance_1/blob/master/consoleApp/src/test/README.md)
 
