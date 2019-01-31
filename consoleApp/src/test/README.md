@@ -473,7 +473,7 @@ Java предоставляет свою реализацию приоритет
     }
 ```
 
-- Проверим считавание команд с файла
+- Проверим считывание команд с файла
 
 Содержание файла **test_3.txt**:
 ```
@@ -528,3 +528,209 @@ extractMin
 ```
 
 ### Неправильные тесты
+- Ввод неправильных команд
+```
+    @Test
+    public void testWrongCommands() {
+        final String[] args = {"sanya", "sanya", "sanya", "-i", "1", "-e", "min", "-e", "min"};
+        final String expectedOut = "Inserting 1\n" + "Min number is 1\n" + "Heap is empty!\n" + "Unknown command\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+- Ввод несуществующего файла
+```
+    @Test
+    public void testFileNotFound() {
+        final String[] args = {"-f", "where is this file?"};
+        final String expectedOut = "File not found\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+- Ввод неправильных параметров в команде
+```
+    @Test
+    public void testWrongCommandParameterAtStart() {
+        final String[] args = {"-i", "a", "-e", "min", "-e", "min", "-i,", "1"};
+        final String expectedOut = "Wrong parameter\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+    
+    @Test
+    public void testWrongCommandParameterInEnd() {
+        final String[] args = {"-i", "3", "-e", "min", "-i", "a", "-e", "aaa"};
+        final String expectedOut = "Inserting 3\n" + "Min number is 3\n" + "Wrong parameter\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+- Ввод неправильных команд в файле
+
+Содержание файла **test_4.txt**
+```
+-i 1 -e min -e min balik
+```
+
+Исходный код теста:
+```
+    @Test
+    public void testFileWrongCommands() {
+        final String[] args = {"-f", "./src/main/resources/test_4.txt"};
+        final String expectedOut = "Inserting 1\n" + "Min number is 1\n" + "Heap is empty!\n" + "Unknown command\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+- Не ввели команд
+
+```
+    @Test
+    public void testEmptyCommands() {
+        final String[] args = {};
+        final String expectedOut = "There are no commands\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+- Не ввели файл(ы) для теста
+```
+   @Test
+    public void testIncorrectOutputFile() {
+        final String[] args = {"--test", "./src/main/resources/inputTest.txt,where is it?"};
+        final String expectedOut = Message.OUTPUT_FILE_ERROR.getMessage() + "\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+
+    @Test
+    public void testIncorrectInputFile() {
+        final String[] args = {"--test", "where is it?,./src/main/resources/outputTest.txt"};
+        final String expectedOut = Message.INPUT_FILE_ERROR.getMessage() + "\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+- Невалидный тестовый файл
+
+Содержание файла **validateTest.txt**
+```
+1
+2
+3.2
+max
+min
+min
+```
+Исходный код теста:
+```
+    @Test
+    public void testValidate() {
+        final String[] args = {"--test", "./src/main/resources/validateTest.txt,./src/main/resources/outputTest.txt"};
+        final String expectedOut = Message.INPUT_ERROR.getMessage() + "\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+**Как можно было увидеть в документации, некоторые команды нельзя использовать больше одного
+раза или в комбинации с другими командами**
+
+Это я тоже учел и проверил:
+```
+    @Test
+    public void testCustomTesterWithOtherCommandAfter() {
+        final String[] args = {"--test", "where is it?,./src/main/resources/outputTest.txt", "-i", "6"};
+        final String expectedOut = Message.INPUT_FILE_ERROR.getMessage() + "\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+
+    @Test
+    public void testCustomTesterWithOtherCommandBefore() {
+        final String[] args = {"-i", "6", "-e", "min", "--test", "where is it?,./src/main/resources/outputTest.txt"};
+        final String expectedOut = Message.INPUT_FILE_ERROR.getMessage() + "\n";
+        Main.main(args);
+        assertEquals(expectedOut, systemOutRule.getLog());
+    }
+    
+    @Test
+    public void testOverwrittenCommand() {
+       final String[] args = {"-f", "./src/main/resources/test_3.txt",
+                    "-f", "./src/main/resources/test_3.txt"};
+       final String expectedOut = "Heap is empty!\n" +
+                    "Heap is empty!\n" +
+                    "Inserting 3\n" +
+                    "Min number is 3\n" +
+                    "Option should be specified only once\n";
+       Main.main(args);
+       assertEquals(expectedOut, systemOutRule.getLog());
+    }
+```
+
+### Доказательства то где?!
+Все зеленое
+
+
+###Extra test
+Решил для удобства тестировщика прогнать все файлы в отдельном тесте:)
+
+Для этого написал код,который по паттернам меняет имена файла и прогоняет все размеры(
+кроме extra-large, т.к он в архиве
+)
+
+
+Исходный код теста:
+```
+    private final String OK = Message.TEST_OK.getMessage() + "\n";
+    private final String inputPattern = "./tests/input/%s/%s%d.input";
+    private final String outputPattern = "./tests/answers/%s/%s%d.answer";
+    private final String commandPattern = "%s,%s";
+
+    @Test
+    public void runAll() {
+        String[] names = {"increasingNegative","decreasingNegative","increasingPositive","decreasingPositive",
+        "insertZero","insertSameRandom","insertExtract","minFromOne","empty","insertExtractIncreasing","insertExtractIncreasingRand",
+        "insertRandom"};
+
+        for (final String testName : names) {
+            Main.main(new String[]{"--test", String.format(commandPattern,
+                    String.format(inputPattern, TestPatterns.SMALL.getSizeName(), testName, TestPatterns.SMALL.getSize()),
+                    String.format(outputPattern, TestPatterns.SMALL.getSizeName(), testName, TestPatterns.SMALL.getSize()))});
+
+            assertEquals(OK, systemOutRule.getLog());
+            systemOutRule.clearLog();
+
+            Main.main(new String[]{"--test", String.format(commandPattern,
+                    String.format(inputPattern, TestPatterns.MEDIUM.getSizeName(), testName, TestPatterns.MEDIUM.getSize()),
+                    String.format(outputPattern, TestPatterns.MEDIUM.getSizeName(), testName, TestPatterns.MEDIUM.getSize()))});
+
+            assertEquals(OK, systemOutRule.getLog());
+            systemOutRule.clearLog();
+
+            Main.main(new String[]{"--test", String.format(commandPattern,
+                    String.format(inputPattern, TestPatterns.BIG.getSizeName(), testName, TestPatterns.BIG.getSize()),
+                    String.format(outputPattern, TestPatterns.BIG.getSizeName(), testName, TestPatterns.BIG.getSize()))});
+
+            assertEquals(OK, systemOutRule.getLog());
+            systemOutRule.clearLog();
+
+            Main.main(new String[]{"--test", String.format(commandPattern,
+                    String.format(inputPattern, TestPatterns.LARGE.getSizeName(), testName, TestPatterns.LARGE.getSize()),
+                    String.format(outputPattern, TestPatterns.LARGE.getSizeName(), testName, TestPatterns.LARGE.getSize()))});
+
+            assertEquals(OK, systemOutRule.getLog());
+            systemOutRule.clearLog();
+        }
+    }
+
+```
+
+
+**Результат:**
+
