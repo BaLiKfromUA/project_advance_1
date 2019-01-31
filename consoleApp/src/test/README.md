@@ -585,7 +585,7 @@ extractMin
     }
 ```
 
-- Не ввели команд
+- Не ввели команды
 
 ```
     @Test
@@ -675,9 +675,10 @@ min
 
 ### Доказательства то где?!
 Все зеленое
+![incorrect test result](https://github.com/BaLiKfromUA/project_advance_1/blob/master/docs/img/consoleTest.png)
 
 
-###Extra test
+##Extra test
 Решил для удобства тестировщика прогнать все файлы в отдельном тесте:)
 
 Для этого написал код,который по паттернам меняет имена файла и прогоняет все размеры(
@@ -733,4 +734,14 @@ min
 
 
 **Результат:**
+![incorrect test result](https://github.com/BaLiKfromUA/project_advance_1/blob/master/docs/img/all-files.jpg)
 
+
+## Итоги
+Теперь прогоним все тесты.
+
+Всего тестов - **98**
+
+Пройдено - **98**
+
+![incorrect test result](https://github.com/BaLiKfromUA/project_advance_1/blob/master/docs/img/all-tests.png)
