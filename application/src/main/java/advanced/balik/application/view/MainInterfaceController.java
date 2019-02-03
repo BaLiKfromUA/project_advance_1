@@ -3,29 +3,21 @@ package advanced.balik.application.view;
 import advanced.balik.application.MainApp;
 import advanced.balik.application.graph.HeapGraph;
 import advanced.balik.application.graph.Style;
-import advanced.balik.application.graph.ViewMode;
 import advanced.balik.application.graph.Turn;
+import advanced.balik.application.graph.ViewMode;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -34,7 +26,6 @@ import org.apache.log4j.Logger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class MainInterfaceController {
@@ -177,6 +168,14 @@ public class MainInterfaceController {
     @FXML
     private Label animationLabel;
 
+    private void setCursorAndHint(Control button, Hints hint) {
+        button.setOnMouseEntered(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
+        button.setOnMouseExited(event ->
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
+        button.setTooltip(new Tooltip(hint.getHint()));
+    }
+
     @FXML
     private void initialize() {
         Group content = heapGraph.getContent();
@@ -195,54 +194,14 @@ public class MainInterfaceController {
         });
 
         //BUTTON HINTS
-        insertFindButton.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        insertFindButton.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        insertFindButton.setTooltip(new Tooltip(Hints.INSERT.getHint()));
-
-        getMinButton.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        getMinButton.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        getMinButton.setTooltip(new Tooltip(Hints.MIN.getHint()));
-
-        randomInsertButton.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        randomInsertButton.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        randomInsertButton.setTooltip(new Tooltip(Hints.RANDOM.getHint()));
-
-        clearButton.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        clearButton.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        clearButton.setTooltip(new Tooltip(Hints.CLEAR.getHint()));
-
-        stepButton.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        stepButton.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        stepButton.setTooltip(new Tooltip(Hints.STEP_BACK.getHint()));
-
-        goAutoButton.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        goAutoButton.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        goAutoButton.setTooltip(new Tooltip(Hints.AUTO.getHint()));
-
-        hideConsoleToggle.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        hideConsoleToggle.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        hideConsoleToggle.setTooltip(new Tooltip(Hints.CONSOLE.getHint()));
-
-        sideBarToggle.setOnMouseEntered(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND));
-        sideBarToggle.setOnMouseExited(event ->
-                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT));
-        sideBarToggle.setTooltip(new Tooltip(Hints.SIDEBAR.getHint()));
-
+        setCursorAndHint(insertFindButton,Hints.INSERT);
+        setCursorAndHint(getMinButton,Hints.MIN);
+        setCursorAndHint(randomInsertButton,Hints.RANDOM);
+        setCursorAndHint(clearButton,Hints.CLEAR);
+        setCursorAndHint(stepButton,Hints.STEP_BACK);
+        setCursorAndHint(goAutoButton,Hints.AUTO);
+        setCursorAndHint(hideConsoleToggle,Hints.CONSOLE);
+        setCursorAndHint(sideBarToggle,Hints.SIDEBAR);
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -442,7 +401,7 @@ public class MainInterfaceController {
             if (step == 0) {
                 log.error("Attempt to access non-existent version.");
                 showError(Error.NO_VERSIONS);
-            }else{
+            } else {
                 log.error("stepcount>step");
                 showError(Error.STEP_ERROR);
             }

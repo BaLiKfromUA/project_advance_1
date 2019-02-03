@@ -44,6 +44,7 @@
 .control-btn {
     -fx-font: 16px "Consolas";
     -fx-text-fill: #ffaaaa;
+    -fx-alignment: center;
     -fx-background-radius: 0%;
     -fx-border-radius: 0%;
     -fx-border-width: 0;

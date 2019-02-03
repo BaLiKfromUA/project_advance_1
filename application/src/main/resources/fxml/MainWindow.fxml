@@ -60,18 +60,8 @@
                                                             <children>
                                                                 <Button id="add-node-btn" fx:id="insertFindButton" layoutY="7.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#insert" prefHeight="25.0" prefWidth="181.0" styleClass="control-btn" text="+/?" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                                                 <Button id="min-btn" fx:id="getMinButton" layoutY="50.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#getMin" prefHeight="25.0" prefWidth="183.0" styleClass="control-btn" text="Extract minimum" textAlignment="JUSTIFY" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0" />
-                                                                <Button id="random-btn" fx:id="randomInsertButton" alignment="CENTER" mnemonicParsing="false" onAction="#insertRandom" prefHeight="25.0" prefWidth="186.0" text="     Insert random" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0">
-                                                                    <styleClass>
-                                                                        <String fx:value="control-btn" />
-                                                                        <String fx:value="control-btn-left" />
-                                                                    </styleClass>
-                                                                </Button>
-                                                                <Button id="clean-btn" fx:id="clearButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#clean" prefHeight="25.0" prefWidth="182.0" text="        Clear heap" textAlignment="JUSTIFY" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0">
-                                                                    <styleClass>
-                                                                        <String fx:value="control-btn" />
-                                                                        <String fx:value="control-btn-left" />
-                                                                    </styleClass>
-                                                                </Button>
+                                                                <Button id="random-btn" fx:id="randomInsertButton" alignment="CENTER" mnemonicParsing="false" onAction="#insertRandom" prefHeight="25.0" prefWidth="186.0" styleClass="control-btn" text="Insert random" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0" />
+                                                                <Button id="clean-btn" fx:id="clearButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#clean" prefHeight="25.0" prefWidth="182.0" styleClass="control-btn" text="Clear heap" textAlignment="JUSTIFY" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="150.0" />
                                                             </children>
                                                         </VBox>
                                                     </children>
