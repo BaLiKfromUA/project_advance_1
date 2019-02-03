@@ -678,7 +678,7 @@ min
 ![incorrect test result](https://github.com/BaLiKfromUA/project_advance_1/blob/master/docs/img/consoleTest.png)
 
 
-##Extra test
+## Extra test
 Решил для удобства тестировщика прогнать все файлы в отдельном тесте:)
 
 Для этого написал код,который по паттернам меняет имена файла и прогоняет все размеры(
@@ -733,7 +733,7 @@ min
 ```
 
 
-**Результат:**
+### **Результат:**
 ![incorrect test result](https://github.com/BaLiKfromUA/project_advance_1/blob/master/docs/img/all-files.jpg)
 
 
