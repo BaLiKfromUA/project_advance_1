@@ -30,7 +30,7 @@ java -jar consoleApp-1.0-SNAPSHOT-jar-with-dependencies.jar -i 6 -i 8 -e min
 ```
 LeftistHeap-{last-version}-SNAPSHOT-1.0.msi
 ```
-**Последняя версия - 1.1**
+**Последняя версия - 1.2**
 
 *Экзешник не советую запускать, т.к он не протестирован (:*
 
